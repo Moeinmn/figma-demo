@@ -1,11 +1,13 @@
 <h2>YOOOOOOOOOOOOOO!</h2>
+<button>Go</button>
 <iframe
-  src="https://pss.pro.ai/api/embed/6fe09574-7def-40b1-ab96-3934fd4c33f3"
+  src="http://127.0.0.1:5500/test.html"
   id="frame"
   onclick=""
+  allow-same-origin
   style="
     position: fixed;
-    top: 0;
+    top: 200;
     left: 0;
     bottom: 0;
     right: 0;
@@ -20,21 +22,25 @@
 >
 </iframe>
 <script>
-  let iframe = document.querySelector("#frame")
-  console.log({iframe});
-  let content = iframe?.contentWindow
-  console.log({content});
-  window.onclick= function(){
-    console.log('here1');
-  }
-  iframe.onclick = function(){
-    console.log('here2');
-  }
-  window.onmessage = async function(e) {
-    if (e.data == 'figmaGetSvg') {
-        console.log({e});
+  let iframe = document.querySelector("#frame");
+  console.log({ iframe });
+  let content = iframe?.contentWindow;
+  console.log({ content });
+
+
+  window.onload = function(e){
+  document.querySelector("button").addEventListener("click",async ()=>{
+    console.log(124)
+    
+    content.postMessage({obj:"hello"} , "*")
+  })
+  window.onmessage = function(e) {
+    if (e.data?.obj == 'hello') {
+        console.log('It works! parent');
+        window.parent.postMessage({pluginMessage:{type: "data_recieved"}} , "*")
     }
-};
-    iframe.contentWindow.postMessage('figmaExport', '*');
+    };
+  }
+
 
 </script>
