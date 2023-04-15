@@ -1,7 +1,7 @@
 <h2>YOOOOOOOOOOOOOO!</h2>
 <button>Go</button>
 <iframe
-  src="http://127.0.0.1:5500/test.html"
+  src="https://plotset.com/api/embed/efcd781e-01fd-43fa-a0bc-398e78d617c1"
   id="frame"
   onclick=""
   allow-same-origin
@@ -31,11 +31,11 @@
   window.onload = function(e){
   document.querySelector("button").addEventListener("click",async ()=>{
     console.log(124)
-    
-    content.postMessage({obj:"hello"} , "*")
+  
+    content.postMessage({command: "export_svg"} , "*")
   })
   window.onmessage = function(e) {
-    if (e.data?.obj == 'hello') {
+    if (e.data?.svg) {
         console.log('It works! parent');
         window.parent.postMessage({pluginMessage:{type: "data_recieved"}} , "*")
     }
