@@ -11,6 +11,11 @@
   "license": "",
   "devDependencies": {
     "@figma/plugin-typings": "*",
+    "@types/fastestsmallesttextencoderdecoder": "^1.0.0",
     "typescript": "*"
+  },
+  "dependencies": {
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "text-encoder-lite": "^2.0.0"
   }
 }

@@ -36,8 +36,29 @@
   })
   window.onmessage = function(e) {
     if (e.data?.svg) {
-        console.log('It works! parent');
-        window.parent.postMessage({pluginMessage:{type: "data_recieved"}} , "*")
+        console.log('It works! parent' , e.data.svg);
+
+          function _base64ToUint8Array(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+    }
+    return new Uint8Array(bytes.buffer);
+  }
+
+        const reader = new FileReader();
+reader.readAsDataURL(e.data?.svg);
+reader.onloadend = function() {
+  const base64data = reader.result.split(',')[1];
+  // Send `base64data` to the parent window using `postMessage()`
+  console.log({base64data : _base64ToUint8Array(base64data)})
+  window.parent.postMessage({pluginMessage: {type: "data_received", value: _base64ToUint8Array(base64data)}}, "*");
+};
+
+        //window.parent.postMessage({pluginMessage:{type: "data_received" , value:e.data?.svg }} , "*")
+        {{/* window.parent.postMessage({pluginMessage:{type: "data_received" , value:JSON.parse(JSON.stringify({svg : e.data?.svg}))}} , "*") */}}
     }
     };
   }
