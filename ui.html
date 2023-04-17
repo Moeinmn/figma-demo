@@ -1,7 +1,8 @@
 <h2>YOOOOOOOOOOOOOO!</h2>
 <button>Go</button>
+
 <iframe
-  src="https://plotset.com/api/embed/efcd781e-01fd-43fa-a0bc-398e78d617c1"
+  src="https://plotset.com/api/embed/0d4abe98-365d-4648-9ffd-3825ba413e98"
   id="frame"
   onclick=""
   allow-same-origin
@@ -27,41 +28,28 @@
   let content = iframe?.contentWindow;
   console.log({ content });
 
+  window.onload = function (e) {
+    document.querySelector("button").addEventListener("click", async () => {
+      content.postMessage({ command: "export_svg" }, "*");
+    });
 
-  window.onload = function(e){
-  document.querySelector("button").addEventListener("click",async ()=>{
-    console.log(124)
-  
-    content.postMessage({command: "export_svg"} , "*")
-  })
-  window.onmessage = function(e) {
-    if (e.data?.svg) {
-        console.log('It works! parent' , e.data.svg);
-
-          function _base64ToUint8Array(base64) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-      bytes[i] = binary_string.charCodeAt(i);
-    }
-    return new Uint8Array(bytes.buffer);
-  }
+    //Receiving message from child Iframe and send it to figma
+    window.onmessage = function (e) {
+      if (e.data?.svg) {
+        console.log("It works! parent", e.data.svg);
 
         const reader = new FileReader();
-reader.readAsDataURL(e.data?.svg);
-reader.onloadend = function() {
-  const base64data = reader.result.split(',')[1];
-  // Send `base64data` to the parent window using `postMessage()`
-  console.log({base64data : _base64ToUint8Array(base64data)})
-  window.parent.postMessage({pluginMessage: {type: "data_received", value: _base64ToUint8Array(base64data)}}, "*");
-};
-
-        //window.parent.postMessage({pluginMessage:{type: "data_received" , value:e.data?.svg }} , "*")
-        {{/* window.parent.postMessage({pluginMessage:{type: "data_received" , value:JSON.parse(JSON.stringify({svg : e.data?.svg}))}} , "*") */}}
-    }
+        reader.readAsDataURL(e.data?.svg);
+        reader.onloadend = function () {
+          const base64data = reader.result.split(",")[1];
+          window.parent.postMessage(
+            {
+              pluginMessage: { type: "data_received", value: atob(base64data) },
+            },
+            "*"
+          );
+        };
+      }
     };
-  }
-
-
+  };
 </script>
