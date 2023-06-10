@@ -1,7 +1,7 @@
 
 if (figma.editorType === 'figma') {
   figma.showUI(__html__);
-  figma.ui.resize(800, 800)
+  figma.ui.resize(1000, 800)
   figma.ui.onmessage = msg => {
     if (msg?.type === "data_received") {
       console.log("msg received from plugin");

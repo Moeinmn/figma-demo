@@ -39,26 +39,15 @@
   }
 </style>
 
-<div class="container">
-  <h1 class="plotset">PlotSet</h1>
-  <div class="input">
-    <input type="input" class="input__field input-blue-border" placeholder="Placeholder" />
-  </div>
-  <div class="centered-btn">
-    <button class='button button--primary loadChart'>Load Chart</button> 
-    &nbsp;&nbsp;&nbsp;
-    <button class='button button--secondary export'>Export Chart</button> 
-  </div>
-</div>
 
 <iframe
-  src="https://plotset.com/api/embed/0d4abe98-365d-4648-9ffd-3825ba413e98"
+  src="https://pss.pro.ai/auth/login"
   id="frame"
   onclick=""
   allow-same-origin
   style="
     width: 100%;
-    height: 517px;
+    height: 100%;
     border: none;
     margin: 0;
     padding: 0;
@@ -73,8 +62,20 @@
   let content = iframe?.contentWindow;
   console.log({ content });
 
+//Add eventlistener for message from site frame
+  window.onmessage = function (e) {
+      if (e.data?.command === "figma_ping") {
+         content.postMessage({ command: "figma_pong" }, "*");
+      }
+  };
+
+
   window.onload = function (e) {
-    document.querySelector(".export")?.addEventListener("click", async () => {
+
+    
+ 
+  function yyy(){
+      document.querySelector(".export")?.addEventListener("click", async () => {
       content.postMessage({ command: "export_svg" }, "*");
     });
 
@@ -82,10 +83,11 @@
       let input = document.querySelector(".input__field")
       iframe.src = input.value
     });
+  }
 
     //Receiving message from child Iframe and send it to figma
     window.onmessage = function (e) {
-      if (e.data?.svg) {
+      if (e.data?.command) {
         console.log("It works! parent", e.data.svg);
 
         const reader = new FileReader();
