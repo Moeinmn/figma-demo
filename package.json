@@ -12,5 +12,5 @@
   "devDependencies": {
     "@figma/plugin-typings": "*",
     "typescript": "*"
-  }
+  } 
 }
