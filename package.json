@@ -1,7 +1,7 @@
 {
-  "name": "plotset-figma",
+  "name": "plotset",
   "version": "1.0.0",
-  "description": "Your Figma Plugin",
+  "description": "Easy Visualization tool ",
   "main": "code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
